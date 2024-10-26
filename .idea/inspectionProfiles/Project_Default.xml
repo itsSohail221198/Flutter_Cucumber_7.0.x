@@ -1,0 +1,35 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="VulnerableLibrariesLocal" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="isIgnoringEnabled" value="true" />
+      <option name="ignoredModules">
+        <list>
+          <option value="SelniumForUAM" />
+          <option value="SelniumForUAM" />
+          <option value="SelniumForUAM" />
+          <option value="SelniumForUAM" />
+          <option value="SelniumForUAM" />
+        </list>
+      </option>
+      <option name="ignoredPackages">
+        <list>
+          <option value="com.beust:jcommander:1.48" />
+          <option value="com.google.code.gson:gson:2.8.6" />
+          <option value="org.testng:testng:6.10" />
+          <option value="org.apache.commons:commons-compress:1.20" />
+          <option value="org.jsoup:jsoup:1.13.1" />
+        </list>
+      </option>
+      <option name="ignoredReasons">
+        <list>
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

@@ -22,7 +22,7 @@ public class LoginPageHelper {
     File file;
     PrintWriter pw;
 
-    public LoginPageHelper() throws IOException {
+    public LoginPageHelper() throws IOException, InterruptedException {
         driver = CreateSession.getWebDriver();
         loginPage = new LoginPage(driver);
         csvFilePath = ".//src//test//java//outputFiles//searchResults.csv";
@@ -30,7 +30,8 @@ public class LoginPageHelper {
 
     @Given("^Launch the Url in the chrome browser$")
     public void launch_url_browser() throws Throwable {
-        loginPage.get("");
+        loginPage.get("www.google-images.com");
+        Thread.sleep(5000);
     }
 
     @When("^Enter the email \"([^\"]*)\" in the email field$")

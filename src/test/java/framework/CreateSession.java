@@ -3,15 +3,13 @@ package framework;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import logger.Log;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -30,89 +28,31 @@ import java.util.GregorianCalendar;
  */
 public class CreateSession {
 
-	/**
-	 * ThreadLocal variable which contains the webdriver instance which is used to perform browser interactions with.
-	 */
-	private static ThreadLocal<WebDriver> webDriver = new ThreadLocal<WebDriver>(); 
-
-	/**
-	 * method to create webdriver instance.
-	 * @throws InterruptedException
-	 */
+	private static WebDriver driver;
 	@Before
-	public static void createDriver() {
+	public static WebDriver createDriver() {
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\gs1-sohaila\\Desktop\\UAM-Automation-FrameWork\\Flutter_Cucumber_7.0.x\\libs\\chromedriver.exe");
 
-		// browser name value passed from command line
-		String browserName = System.getProperty("browser");
+		// Set ChromeOptions for headless mode
+		ChromeOptions options = new ChromeOptions();
+		//options.setHeadless(true); // Run Chrome in headless mode
+		options.addArguments("--disable-gpu"); // Disable GPU (recommended for headless)
+		options.addArguments("--window-size=1920,1080"); // Set window size if needed
 
-		// headless value passed from command line
-		String headless =System.getProperty("headless");
-
-		DesiredCapabilities capability = new DesiredCapabilities();
-
-		// if browser name value is not passed from commandline then by default test would run on chrome
-		if (browserName == null)
-			browserName = "chrome";
-
-		// initializing the browser if headless parameter sent as yes, initialize phantomjs
-		if( headless != null && headless.equalsIgnoreCase("yes")){
-
-			System.setProperty("phantomjs.binary.path", "libs//phantomjs");		
-			String user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36";
-			DesiredCapabilities cap = DesiredCapabilities.phantomjs();
-			cap.setCapability(PhantomJSDriverService.PHANTOMJS_PAGE_SETTINGS_PREFIX + "userAgent", user_agent);
-			cap.setCapability(PhantomJSDriverService.PHANTOMJS_PAGE_SETTINGS_PREFIX + "loadImages", true);
-			cap.setCapability(PhantomJSDriverService.PHANTOMJS_PAGE_SETTINGS_PREFIX + "javascriptEnabled", true);
-
-			// Start phantomjs driver
-			webDriver.set(new PhantomJSDriver(cap));
-
-
-		}
-		// if browser name passed as firefox
-		else if(browserName.equalsIgnoreCase("Firefox")){
-			WebDriverManager.firefoxdriver().setup();
-			capability.setBrowserName("Firefox");
-			webDriver.set(new FirefoxDriver());
-		}
-		// if browser name passed as chrome
-		else if(browserName.equalsIgnoreCase("chrome")){
-			String OS = System.getProperty("os.name");
-			if(OS.contains("Windows"))
-			{
-				WebDriverManager.chromedriver().setup();
-				capability.setBrowserName("Chrome");
-				capability.setPlatform(Platform.WIN8_1);
-				webDriver.set(new ChromeDriver());
-			}
-			else if(OS.contains("Linux"))
-			{
-				WebDriverManager.chromedriver().setup();
-				capability.setBrowserName("Chrome");
-				capability.setPlatform(Platform.LINUX);
-				webDriver.set(new ChromeDriver());
-			}
-			else if(OS.contains("Mac"))
-			{
-				WebDriverManager.chromedriver().setup();
-				capability.setBrowserName("Chrome");
-				capability.setPlatform(Platform.MAC);
-				webDriver.set(new ChromeDriver());
-			}
-		}
-		getWebDriver().manage().window().maximize();
-	}
-
-
-
+		// Initialize ChromeDriver with options
+		driver = new ChromeDriver(options);
+		return driver;
+    }
 
 	/**
 	 * @return the webdriver for the current thread
 	 */
-	public static WebDriver getWebDriver() {
-		System.out.println("WebDriver: " + webDriver.get());
-		return webDriver.get();
-	}
+	public static WebDriver getWebDriver() throws InterruptedException {
+		driver.get("www.google.com");
+		Thread.sleep(5000);
+		driver.manage().window().maximize();
+        return driver;
+    }
 
 	/**
 	 * method executes at the end of each scenario and takes screenshot in case of scenario failure.
@@ -120,7 +60,7 @@ public class CreateSession {
 	 * @param scenario to verify if scenarios has passed or failed
 	 */
 	@After
-	public void teardown(Scenario scenario){
+	public void teardown(Scenario scenario) throws InterruptedException {
 
 		// Here will compare if test is failing then only it will enter into if condition
 

@@ -1,18 +1,25 @@
 package pages;
 
-import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import framework.CommonMethods;
-public class LoginPage extends CommonMethods{
-    public LoginPage(WebDriver driver) throws IOException {
-        super(driver);
-        // TODO Auto-generated constructor stub
+import org.openqa.selenium.WebElement;
+
+
+public class LoginPage {
+
+    WebDriver driver;
+    public LoginPage(WebDriver driver){
+        this.driver = driver;
     }
 
-    public By emailIdField = By.xpath("//input[@aria-label='Email *']");
-    public By passWordField = By.xpath("(//input[@aria-label='Password *'])");
-    public By viewPasswordBtn = By.xpath("(//flt-semantics[@id='flt-semantic-node-10'])");
-    public By loginBtn = By.xpath("(//flt-semantics[@aria-label='semanticsLoginBTN'])");
+    public WebElement getEmail() {
+        return driver.findElement(By.id("username"));
+    }
+    public WebElement getPassWordField() {
+        return driver.findElement(By.id("password"));
+    }
+    public WebElement getLoginButton() {
+        return driver.findElement(By.id("submit"));
+    }
 
 }
