@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
         glue = "stepDefinitions",
         monochrome = true,
         dryRun = false,
+        publish = true,
         plugin = {
                 "pretty",
                 "html:target/ParallelReports/SeleniumTraining.html",
